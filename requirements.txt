@@ -1,0 +1,5 @@
+firebase-admin==6.0.1
+gcloud
+oauth2client
+Pillow
+python-dotenv
