@@ -61,7 +61,7 @@ class Bucket():
 
 
 class BackendFirebase:
-    def __init__(self, ):
+    def __init__(self):
         default_fb_app = firebase_admin.initialize_app()
         self.db = firestore.client()
         self.db_users = self.db.collection('users')
@@ -117,3 +117,18 @@ class BackendFirebase:
         ref = self.db_jobs.document(job_uuid)
         ref.set(params)
         return ref.get().to_dict()
+
+    def update_job(self, job_uuid, update_dict):
+        ref = self.db_jobs.document(job_uuid)
+        ref.update(update_dict)
+        return ref.get().to_dict()
+    
+    def get_job(self, job_uuid):
+        ref = self.db_jobs.document(job_uuid)
+        return ref.get().to_dict()
+    
+    def get_job_by_owner(self, owner_uuid):
+        return [{e.id: e.to_dict()} for e in self.db_jobs.where('owner_uuid', '==', owner_uuid).stream()]
+
+    def delete_app(self):
+        firebase_admin.delete_app(firebase_admin.get_app())
