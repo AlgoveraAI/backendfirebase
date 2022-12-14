@@ -66,6 +66,7 @@ class BackendFirebase:
         self.db = firestore.client()
         self.db_users = self.db.collection('users')
         self.db_jobs = self.db.collection('jobs')
+        self.db_bm = self.db.collection('basemodels')
         self.bucket = Bucket()
 
     def get_credits(self, user):
@@ -132,3 +133,7 @@ class BackendFirebase:
 
     def delete_app(self):
         firebase_admin.delete_app(firebase_admin.get_app())
+    
+    def get_bm(self):
+        refs = self.db_bm.get()
+        return {ref.id: ref.to_dict()for ref in refs}
