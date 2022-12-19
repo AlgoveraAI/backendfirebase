@@ -67,6 +67,7 @@ class BackendFirebase:
         self.db_users = self.db.collection('users')
         self.db_jobs = self.db.collection('jobs')
         self.db_bm = self.db.collection('basemodels')
+        self.db_api = self.db.collection("apiKeys")
         self.bucket = Bucket()
 
     def get_credits(self, user):
@@ -137,3 +138,8 @@ class BackendFirebase:
     def get_bm(self):
         refs = self.db_bm.get()
         return {ref.id: ref.to_dict()for ref in refs}
+    
+    def get_api(self, apiKey):
+        api = apiKey[:8]
+        ref = self.db_api.document(api)
+        return ref.get().to_dict()
